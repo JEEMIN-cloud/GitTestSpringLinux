@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dog/Cat Prediction</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" th:href="@{/css/dogcat.css}">
+</head>
+<body>
+
+<div class="container">
+    <h2>🐾 강아지/고양이 예측 이미지 업로드</h2>
+
+    <div class="file-upload-area">
+        <input type="file" id="fileInput" accept="image/*" />
+        <button onclick="uploadImage()">전송</button>
+    </div>
+
+    <div id="previewContainer">
+        <img id="imagePreview" src="#" alt="선택된 이미지 미리보기" />
+    </div>
+
+    <div class="spinner" id="loadingSpinner"></div>
+
+    <div id="result">
+        <p>이미지를 업로드하면 결과가 여기에 표시됩니다.</p>
+    </div>
+</div>
+
+<script>
+
+//⭐ 1. 이미지 미리보기 기능 ⭐
+$("#fileInput").change(function() {
+    let file = this.files[0];
+    if (file) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            $("#imagePreview").attr('src', e.target.result).show();
+        };
+        reader.readAsDataURL(file);
+    } else {
+        $("#imagePreview").hide();
+    }
+});
+
+
+function uploadImage() {
+    let file = $("#fileInput")[0].files[0];
+    if (!file) {
+        alert("파일을 선택하세요");
+        return;
+    }
+    
+ // ⭐ 2. 로딩 스피너 활성화 및 결과/미리보기 초기화 ⭐
+    $("#loadingSpinner").show();
+    $("#result").html("<p>서버와 통신 중...</p>");
+    $("#imagePreview").css('opacity', '0.5'); // 이미지를 살짝 어둡게 처리하여 로딩 중임을 시각적으로 표현
+
+    let formData = new FormData();
+    formData.append("file", file);
+    
+    //contentType : false -> 알아서 설정해라
+    //processData : false -> ajax jquery file 그대로 전송할 수 있게 비활성화
+
+    $.ajax({
+        url: "http://localhost:8087/predict",
+        type: "POST",
+        data: formData,
+        contentType: false, 
+        processData: false, 
+        success: function(res) {
+            $("#result").html(
+                "<h3>결과: " + res.label + "</h3>" +
+                "<p>정확도: " + (res.confidence *100).toFixed(1) + "</p>"
+            );
+        },
+        error: function(err) {
+            $("#result").html("<p style='color:red;'>에러 발생</p>");
+        },
+        complete: function() {
+            // ⭐ 3. 통신 완료 후 로딩 스피너 비활성화 및 미리보기 투명도 복구 ⭐
+            $("#loadingSpinner").hide();
+            $("#imagePreview").css('opacity', '1');
+        }
+    });
+}
+</script>
+
+</body>
+</html>

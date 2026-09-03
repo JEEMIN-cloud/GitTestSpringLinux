@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>분석 결과를 띄워보자</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    }
+
+    .container {
+        width: 420px;
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    h1 {
+        margin-bottom: 35px;
+        color: #333;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .menu-btn {
+        border: none;
+        border-radius: 12px;
+        padding: 16px;
+        font-size: 18px;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .menu-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    }
+
+    .btn-titanic {
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+    }
+
+    .btn-animal {
+        background: linear-gradient(135deg, #10b981, #34d399);
+    }
+
+    .btn-coming {
+        background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📊 분석 결과를 띄워보자</h1>
+
+    <div class="button-group">
+
+        <button class="menu-btn btn-titanic"
+                onclick="location.href='/titanic'">
+            🚢 타이타닉 생존 분석
+        </button>
+
+        <button class="menu-btn btn-animal"
+                onclick="location.href='/dog-cat'">
+            🐶🐱 개 · 고양이 분류
+        </button>
+
+        <button class="menu-btn btn-coming"
+                onclick="location.href='/titanic-rag'">
+             🚢 타이타닉 생존 분석(RAG 적용 버전)
+        </button>
+
+    </div>
+
+</div>
+
+</body>
+</html>
